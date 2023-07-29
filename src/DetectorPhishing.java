@@ -49,7 +49,13 @@ public class DetectorPhishing {
         palabrasValores.put("su cuenta de ha sido bloqueada ", 3);
         
 
-        // se lee el archivo y se buscan las palabras clave
+        //  Map para almacenar la suma de puntos de cada palabra clave encontrada
+        Map<String, Integer> totalAcumulado = new HashMap<>();
+        
+        //  Map para almacenar el número de ocurrencias de cada palabra clave encontrada
+        Map<String, Integer> ocurrencias = new HashMap<>();
+
+        // Se lee el archivo y se buscan las palabras clave
         try {
             BufferedReader br = new BufferedReader(new FileReader(archivo));
             String linea;
@@ -59,14 +65,24 @@ public class DetectorPhishing {
                     String palabra = entry.getKey();
                     int valor = entry.getValue();
                     if (linea.toLowerCase().contains(palabra.toLowerCase())) {
-                        System.out.println("Palabra clave encontrada: " + palabra + " (" + valor + " puntos)");   //se imprime en pantalla
+                        totalAcumulado.put(palabra, totalAcumulado.getOrDefault(palabra, 0) + valor);
+                        ocurrencias.put(palabra, ocurrencias.getOrDefault(palabra, 0) + 1);
                     }
                 }
             }
             br.close();
+
+            // Se muestra información solo para las palabras clave encontradas
+            
+            for (Map.Entry<String, Integer> entry : ocurrencias.entrySet()) {
+                String palabra = entry.getKey();
+                int numOcurrencias = entry.getValue();
+                int total = totalAcumulado.getOrDefault(palabra, 0);
+                System.out.println(palabra + " (Ocurrencias: " + numOcurrencias + ", Total de puntos: " + total + ")");
+            }
+
         } catch (IOException e) {
             System.out.println("Error al leer el archivo: " + e.getMessage());
         }
     }
 }
-
