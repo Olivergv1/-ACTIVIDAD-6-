@@ -81,6 +81,14 @@ public class DetectorPhishing {
                 System.out.println(palabra + " (Ocurrencias: " + numOcurrencias + ", Total de puntos: " + total + ")");
             }
 
+            // Se calcula y se muestra en pantalla el total de puntos para todo el mensaje de texto
+            
+            int totalPuntos = 0;
+            for (int valor : totalAcumulado.values()) {
+                totalPuntos += valor;
+            }
+            System.out.println("\nTotal de puntos para todo el mensaje de texto: " + totalPuntos);
+
         } catch (IOException e) {
             System.out.println("Error al leer el archivo: " + e.getMessage());
         }
